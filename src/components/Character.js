@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import CharacterList from "./CharacterList";
+import {CharacterList, Favorites} from "./CharacterList";
 
 function RndCharacter(props) {
   return (
@@ -13,43 +13,6 @@ function RndCharacter(props) {
         Get New Random Hero
       </button>
     </header>
-  );
-}
-
-function Favorites(props) {
-  const [favoritos, setFavoritos] = useState(false);
-
-  function addFavorites() {
-    setFavoritos(true);
-  }
-  function removeFavorites() {
-    setFavoritos(false);
-  }
-  useEffect(() => {
-    try {
-      if (favoritos === true) {
-        localStorage.setItem(props.id, JSON.stringify(props.characters));
-        document.getElementById("favoritos").innerHTML =
-          "Remove from Favorites";
-      } else {
-        localStorage.removeItem(props.id);
-        document.getElementById("favoritos").innerHTML = "Add to Favorites";
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [favoritos, props.characters, props.id]);
-
-  return (
-    <div>
-      <button
-        id="favoritos"
-        className="btn btn-primary"
-        onClick={() => {
-          favoritos ? removeFavorites() : addFavorites();
-        }}
-      ></button>
-    </div>
   );
 }
 
@@ -67,7 +30,6 @@ function Character(props) {
           url: `https://cors-anywhere.herokuapp.com/https://superheroapi.com/api/2128939953945151/${id}`,
         });
         setLoading(false);
-
         setCharacters(data);
         console.log(data);
       }
@@ -93,7 +55,7 @@ function Character(props) {
           <img src={characters.image.url} alt={characters.name} />
         </div>
       )}
-      <Favorites characters={characters} id={id} />
+      <Favorites />
     </div>
   );
 }
